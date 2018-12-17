@@ -1,50 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.design.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
-                                                   xmlns:app="http://schemas.android.com/apk/res-auto"
-                                                   android:layout_width="match_parent"
-                                                   android:layout_height="100dp"
-                                                   android:id="@+id/cv_row_item"
-                                                   app:cardCornerRadius="8dp"
-                                                   android:layout_margin="2dp"
-                                                   app:cardElevation="10dp"
-                                                   app:cardBackgroundColor="@android:color/white">
+                                              xmlns:app="http://schemas.android.com/apk/res-auto"
+                                              android:layout_width="match_parent"
+                                              android:layout_height="@dimen/_100dp"
+                                              android:id="@+id/cv_row_item"
+                                              app:cardCornerRadius="@dimen/_5dp"
+                                              android:layout_margin="@dimen/_2dp"
+                                              app:cardElevation="@dimen/_5dp"
+                                              android:transitionName="row_item"
+                                              app:cardBackgroundColor="@android:color/white">
 
     <LinearLayout android:layout_width="match_parent"
-                                                  android:layout_height="match_parent"
-                                                  android:orientation="horizontal">
+                  android:layout_height="match_parent"
+                  android:orientation="horizontal">
 
-        <com.google.android.material.card.MaterialCardView
-                android:layout_width="60dp"
-                android:layout_height="50dp"
-                android:layout_gravity="center_vertical"
-                android:layout_marginStart="10dp"
-                app:cardCornerRadius="8dp"
-                app:cardElevation="10dp">
+        <android.support.v7.widget.CardView android:layout_width="@dimen/_60dp"
+                                            android:layout_height="@dimen/_50dp"
+                                            android:layout_gravity="center_vertical"
+                                            android:layout_marginStart="@dimen/_10dp"
+                                            app:cardCornerRadius="@dimen/_5dp"
+                                            app:cardElevation="@dimen/_5dp">
 
             <ImageView android:layout_width="match_parent"
-                                                          android:layout_height="match_parent"
-                                                          android:src="@drawable/img_thumb"
-                                                          android:id="@+id/imageView"/>
-        </com.google.android.material.card.MaterialCardView>
+                       android:layout_height="match_parent"
+                       android:src="@drawable/img_thumb"
+                       android:scaleType="fitXY"
+                       android:id="@+id/imageView"/>
+        </android.support.v7.widget.CardView>
 
         <LinearLayout android:layout_width="match_parent"
-                                                      android:layout_height="match_parent"
-                                                      android:orientation="vertical"
-                                                      android:layout_marginStart="10dp"
-                                                      android:gravity="center_vertical">
+                      android:layout_height="match_parent"
+                      android:orientation="vertical"
+                      android:layout_marginStart="@dimen/_10dp"
+                      android:gravity="center_vertical">
 
             <TextView android:layout_width="match_parent"
-                                                         android:layout_height="wrap_content"
-                                                         android:hint="Title"
-                                                         android:id="@+id/tv_title"/>
+                      android:layout_height="wrap_content"
+                      android:hint="Title"
+                      android:id="@+id/tv_title"/>
 
             <TextView android:layout_width="match_parent"
-                                                         android:layout_height="wrap_content"
-                                                         android:hint="URL"
-                                                         android:id="@+id/tv_url"/>
+                      android:layout_height="wrap_content"
+                      android:hint="URL"
+                      android:id="@+id/tv_url"/>
 
 
-    </LinearLayout>
+        </LinearLayout>
     </LinearLayout>
 
 

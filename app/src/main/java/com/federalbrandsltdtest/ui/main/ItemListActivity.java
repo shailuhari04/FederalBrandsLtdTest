@@ -12,8 +12,10 @@ import com.federalbrandsltdtest.pojos.PhotosRealmPojo;
 import com.federalbrandsltdtest.ui.main.core.ItemListPresenter;
 import com.federalbrandsltdtest.utils.Util;
 import io.realm.Realm;
+import io.realm.RealmResults;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ItemListActivity extends AppCompatActivity implements ItemListActivityMVP.View {
@@ -22,6 +24,7 @@ public class ItemListActivity extends AppCompatActivity implements ItemListActiv
     private ItemListPresenter itemListPresenter;
     private Realm realm;
     private RecyclerView recyclerView;
+    RealmResults<PhotosRealmPojo> realmResults;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,10 +34,18 @@ public class ItemListActivity extends AppCompatActivity implements ItemListActiv
         //View Initialization
         initView();
 
+        /**
+         * Logic Of Data Load From API and Realm Local DB
+         */
         if (!checkLocalDataAvailable()) {
             if (Util.isInternet(this)) {
                 itemListPresenter.getPhotosApiCall();
             }
+        }else {
+            realmResults = itemListPresenter.getLocalData();
+            assert realmResults!= null;
+            ArrayList<PhotosRealmPojo> list = new ArrayList<>(realmResults);
+            navigateDataToRecyclerView(list);
         }
     }
 

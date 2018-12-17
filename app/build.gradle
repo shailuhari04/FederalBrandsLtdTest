@@ -44,8 +44,9 @@ dependencies {
     //custom animation(left-to-right, right-to-left, bottom-to-up, up-to-bottom, fadein-to-fadeout, rotateout-to-rotatein)
     implementation 'com.github.hajiyevelnur92:intentanimation:1.0'
 
-    //picasso
-    implementation 'com.squareup.picasso:picasso:2.71828'
+    // Glide v4 uses this new annotation processor -- see https://bumptech.github.io/glide/doc/generatedapi.html
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.7.1'
+    implementation 'com.github.bumptech.glide:glide:4.8.0'
 
     // Calligraphy  (Fonts)
     implementation 'uk.co.chrisjenx:calligraphy:2.3.0'

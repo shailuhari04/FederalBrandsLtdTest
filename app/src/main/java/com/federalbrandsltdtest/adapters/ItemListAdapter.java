@@ -1,15 +1,18 @@
 package com.federalbrandsltdtest.adapters;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
-import android.support.design.card.MaterialCardView;
+import android.support.v4.app.ActivityOptionsCompat;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import com.bumptech.glide.Glide;
 import com.federalbrandsltdtest.R;
 import com.federalbrandsltdtest.pojos.PhotosRealmPojo;
 import com.federalbrandsltdtest.ui.detail.ItemDetailsActivity;
@@ -38,16 +41,34 @@ public class ItemListAdapter extends RecyclerView.Adapter<ItemListAdapter.ItemVi
     @Override
     public void onBindViewHolder(@NonNull ItemViewHolder holder, int position) {
 
-        holder.tv_title.setText(photosRealmPojoList.get(position).getTitle());
-        holder.tv_url.setText(photosRealmPojoList.get(position).getUrl());
+        Glide.with(context)
+                .load(photosRealmPojoList.get(position).getThumbnailUrl())
+                .into(holder.imageView);
 
-        holder.materialCardView.setOnClickListener(new View.OnClickListener() {
+        try {
+            holder.tv_title.setText(photosRealmPojoList.get(position).getTitle());
+        } catch (Exception e) {
+            e.printStackTrace();
+            holder.tv_title.setText("");
+        }
+
+        try {
+            holder.tv_url.setText(photosRealmPojoList.get(position).getUrl());
+        } catch (Exception e) {
+            e.printStackTrace();
+            holder.tv_url.setText("");
+        }
+
+        holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context, ItemDetailsActivity.class);
                 intent.putExtra(Constants.TITLE, photosRealmPojoList.get(position).getTitle());
                 intent.putExtra(Constants.URL, photosRealmPojoList.get(position).getUrl());
-                context.startActivity(intent);
+                ActivityOptionsCompat options = ActivityOptionsCompat.
+                        makeSceneTransitionAnimation((Activity) context, (CardView)holder.cardView, "row_item");
+                context.startActivity(intent, options.toBundle());
+                //context.startActivity(intent);
             }
         });
     }
@@ -59,7 +80,7 @@ public class ItemListAdapter extends RecyclerView.Adapter<ItemListAdapter.ItemVi
 
     public class ItemViewHolder extends RecyclerView.ViewHolder {
 
-        MaterialCardView materialCardView;
+        CardView cardView;
         ImageView imageView;
         TextView tv_title;
         TextView tv_url;
@@ -70,7 +91,7 @@ public class ItemListAdapter extends RecyclerView.Adapter<ItemListAdapter.ItemVi
         }
 
         private void initView(View itemView) {
-            materialCardView = (MaterialCardView) itemView.findViewById(R.id.cv_row_item);
+            cardView = (CardView) itemView.findViewById(R.id.cv_row_item);
             imageView = (ImageView) itemView.findViewById(R.id.imageView);
             tv_title = (TextView) itemView.findViewById(R.id.tv_title);
             tv_url = (TextView) itemView.findViewById(R.id.tv_url);

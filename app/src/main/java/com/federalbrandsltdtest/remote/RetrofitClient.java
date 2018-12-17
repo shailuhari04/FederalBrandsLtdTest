@@ -11,8 +11,7 @@ import java.util.concurrent.TimeUnit;
 public class RetrofitClient {
 
     //https://jsonplaceholder.typicode.com/photos
-    //private static final String WEB_API_BASE_URL = "https://jsonplaceholder.typicode.com/";
-    private static final String WEB_API_BASE_URL = "https://jsonplaceholder.typicode.com/photos/";
+    private static final String WEB_API_BASE_URL = "https://jsonplaceholder.typicode.com";
 
     private static OkHttpClient okHttpClient = new OkHttpClient.Builder()
             .readTimeout(1000, TimeUnit.SECONDS)

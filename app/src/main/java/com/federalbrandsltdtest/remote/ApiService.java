@@ -8,9 +8,7 @@ import java.util.List;
 
 public interface ApiService {
 
-    @GET("photos")
+    @GET("/photos")
     Observable<List<GetPhotosResponsePojo>> getPhotos();
-
-    @GET()
-    Observable<GetPhotosResponsePojo> getPhotosData();
 }
+

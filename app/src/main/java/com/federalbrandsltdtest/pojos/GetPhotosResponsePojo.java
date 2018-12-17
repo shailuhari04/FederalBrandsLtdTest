@@ -3,7 +3,7 @@ package com.federalbrandsltdtest.pojos;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public abstract class GetPhotosResponsePojo {
+public class GetPhotosResponsePojo {
 
     @Expose
     @SerializedName("thumbnailUrl")

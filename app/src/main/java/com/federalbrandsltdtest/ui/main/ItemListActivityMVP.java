@@ -5,6 +5,8 @@ import com.federalbrandsltdtest.global.GlobalView;
 import com.federalbrandsltdtest.pojos.GetPhotosResponsePojo;
 import com.federalbrandsltdtest.pojos.PhotosRealmPojo;
 import io.reactivex.Observable;
+import io.realm.RealmResults;
+import retrofit2.Call;
 
 import java.util.List;
 
@@ -16,8 +18,6 @@ public class ItemListActivityMVP {
      */
     public interface Model {
         Observable<List<GetPhotosResponsePojo>> getPhotos();
-
-        Observable<GetPhotosResponsePojo> getPhotosData();
     }
 
 
@@ -42,6 +42,8 @@ public class ItemListActivityMVP {
         void getPhotosApiCall();
 
         List<PhotosRealmPojo> saveDataInLocal(List<GetPhotosResponsePojo> getPhotosResponsePojo);
+
+        RealmResults<PhotosRealmPojo> getLocalData();
 
     }
 }
