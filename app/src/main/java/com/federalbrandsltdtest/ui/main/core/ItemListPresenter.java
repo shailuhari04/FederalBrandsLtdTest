@@ -75,6 +75,8 @@ public class ItemListPresenter implements ItemListActivityMVP.Presenter {
         //init model
         onCreate();
 
+        //show loader
+        // itemListView.showProgress(SweetAlertDialog.PROGRESS_TYPE, "Loading....", false);
         itemListModel.getPhotos()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -89,25 +91,25 @@ public class ItemListPresenter implements ItemListActivityMVP.Presenter {
         return new Observer<List<GetPhotosResponsePojo>>() {
             @Override
             public void onSubscribe(Disposable d) {
-                //show loader
-                itemListView.showProgress(SweetAlertDialog.PROGRESS_TYPE, "Loading....", false);
             }
 
             @Override
             public void onNext(List<GetPhotosResponsePojo> getPhotosResponsePojos) {
 
-                itemListView.navigateDataToRecyclerView(saveDataInLocal(getPhotosResponsePojos));
+                new SaveDataInRealm(getPhotosResponsePojos, itemListView).execute();
+
+                // itemListView.navigateDataToRecyclerView(saveDataInLocal(getPhotosResponsePojos));
             }
 
             @Override
             public void onError(Throwable e) {
-                itemListView.hideProgress();
+                // itemListView.hideProgress();
                 itemListView.showProgress(SweetAlertDialog.ERROR_TYPE, "Error...", true);
             }
 
             @Override
             public void onComplete() {
-                itemListView.hideProgress();
+                //itemListView.hideProgress();
             }
         };
     }
@@ -135,8 +137,6 @@ public class ItemListPresenter implements ItemListActivityMVP.Presenter {
             } else {
                 Log.d(TAG, "Failed To Save PhotoPojo -> " + pojo.toString());
             }
-            //Background Task
-           // new GetByteImageAsync(data, realm).execute();
 
             list.add(pojo);
         }
@@ -145,6 +145,58 @@ public class ItemListPresenter implements ItemListActivityMVP.Presenter {
     }
 
 
+    private static class SaveDataInRealm extends AsyncTask<String, Void, ArrayList<PhotosRealmPojo>> {
+
+
+        private final List<GetPhotosResponsePojo> getPhotosResponsePojos;
+        private ItemListActivityMVP.View itemListView;
+
+        public SaveDataInRealm(List<GetPhotosResponsePojo> getPhotosResponsePojos, ItemListActivityMVP.View itemListView) {
+            this.getPhotosResponsePojos = getPhotosResponsePojos;
+            this.itemListView = itemListView;
+        }
+
+        @Override
+        protected ArrayList<PhotosRealmPojo> doInBackground(String... strings) {
+
+            ArrayList<PhotosRealmPojo> list = new ArrayList<>();
+
+            try (Realm realm = Realm.getDefaultInstance()) {
+                for (GetPhotosResponsePojo data : getPhotosResponsePojos) {
+                    PhotosRealmPojo pojo = new PhotosRealmPojo();
+                    pojo.setId(data.getId());
+                    pojo.setThumbnailUrl(data.getThumbnailUrl());
+                    pojo.setTitle(data.getTitle());
+                    pojo.setUrl(data.getUrl());
+
+                    RealmHelper helper = new RealmHelper(realm);
+
+                    if (helper.savePhoto(pojo)) {
+                        Log.d(TAG, "Saved PhotoPojo -> " + pojo.toString());
+                    } else {
+                        Log.d(TAG, "Failed To Save PhotoPojo -> " + pojo.toString());
+                    }
+
+                    list.add(pojo);
+                }
+
+            }
+            return list;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            //show loader
+            itemListView.showProgress(SweetAlertDialog.PROGRESS_TYPE, "Loading....", false);
+        }
+
+        @Override
+        protected void onPostExecute(ArrayList<PhotosRealmPojo> pojoArrayList) {
+            itemListView.hideProgress();
+            itemListView.navigateDataToRecyclerView(pojoArrayList);
+        }
+    }
 
     private static class GetByteImageAsync extends AsyncTask<String, Void, String> {
 
